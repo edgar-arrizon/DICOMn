@@ -9,6 +9,7 @@ venv/
 .env/
 
 # Ignore data files
+dcm_samples
 *.dcm
 
 # Ignore environment variables
