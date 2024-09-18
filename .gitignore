@@ -10,6 +10,7 @@ venv/
 
 # Ignore data files
 dcm_samples/
+ONMD QR Code/
 *.dcm
 
 # Ignore environment variables
