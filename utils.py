@@ -73,7 +73,7 @@ def add_qr_to_dicom(dicom_path, qr_image_path, output_path, position="top-right"
     else:
         print("This DICOM file does not contain image data.")
 
-def show_image(dicom):
+def normalize_visualize_dicom(dicom):
     dcm = pydicom.read_file(dicom)
     # print(dcm)
     
@@ -109,3 +109,32 @@ def show_image(dicom):
     #image is now ready to be displayed or saved as a new DICOM file
     pillow_img = Image.fromarray(uint8)
     pillow_img.show()
+
+
+def normalize_visualize_dicom2(dicom, max_v=None, min_v=None, show=True):
+    dcm = pydicom.read_file(dicom)
+    dcm_arr = dcm.pixel_array
+    
+    if max_v: houns_field_max = max_v
+    else: houns_field_max = np.max(dcm_arr)
+
+    if min_v: houns_field_max = min_v
+    else: houns_field_min = np.min(dcm_arr)
+
+    houns_field_min =   np.min(dcm_arr)
+    houns_field_max =   np.max(dcm_arr)
+    houns_field_range = houns_field_max - houns_field_min
+
+    dcm_arr[dcm_arr < houns_field_min] = houns_field_min
+    dcm_arr[dcm_arr > houns_field_max] = houns_field_max
+
+    #generates values between 0 - 1
+    normalized_dcm_arr = (dcm_arr - houns_field_min) / houns_field_range
+    normalized_dcm_arr *= 255
+    uint8_img = np.int8(normalized_dcm_arr)
+
+    if show:
+        pillow_img = Image.fromarray(uint8_img)
+        pillow_img.show()
+
+    return uint8_img

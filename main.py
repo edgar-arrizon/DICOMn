@@ -1,5 +1,5 @@
 import utils as ut
-import pydicom as p
+import pydicom as pydicom
 import numpy as np
 from PIL import Image
 
@@ -10,7 +10,10 @@ modified_dcm = '/Users/edgararrizon/code/DICOMn/output.dcm'
 
 
 def main():
-    ut.show_image(dcm_sample_axial)
+    ut.normalize_visualize_dicom(dcm_sample_axial)
+    ut.normalize_visualize_dicom2(dcm_sample_axial)
+
+
 
 
 
