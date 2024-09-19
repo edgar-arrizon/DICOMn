@@ -10,7 +10,7 @@ modified_dcm = '/Users/edgararrizon/code/DICOMn/output.dcm'
 
 
 def main():
-    ut.normalize_visualize_dicom(dcm_sample_axial)
+    # ut.normalize_visualize_dicom(dcm_sample_axial)
     ut.normalize_visualize_dicom2(dcm_sample_axial)
 
 

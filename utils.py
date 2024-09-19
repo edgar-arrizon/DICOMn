@@ -75,10 +75,8 @@ def add_qr_to_dicom(dicom_path, qr_image_path, output_path, position="top-right"
 
 def normalize_visualize_dicom(dicom):
     dcm = pydicom.read_file(dicom)
-    # print(dcm)
     
     dcm_arr = dcm.pixel_array
-    # print(dcm_arr)
 
     dcm_shape = dcm_arr.shape
     print(dcm_shape)
@@ -86,25 +84,20 @@ def normalize_visualize_dicom(dicom):
     # if we want to visualize an image with the Pillow library we need to have the unique values be between 0 - 255 / 8 byte integers
     # if values are outside this range, we need to do some preprocessing
     unique_vals = np.unique(dcm_arr)
-    # print(unique_vals)
 
     #convert all numbers in unique_vals to floats, we want values between 0 and 1
     float_dicom_arr = dcm_arr.astype(float)
-    # print(float_dicom_arr)
 
     # remove negative values, if any
     positive_dcm_arr = np.maximum(float_dicom_arr, 0)
 
     #normalize the values to be between 0 and 1
     normalized_dcm_arr = positive_dcm_arr / np.max(positive_dcm_arr)
-    print('<====== normalized_dcm_arr =====> \n', normalized_dcm_arr)
 
     #generate a new array with the values between 0 and 255, which is the range of 8 bit integers
     normalized_dcm_arr *=255.0
-    print('<====== normalized_dcm_arr =====> \n', normalized_dcm_arr)
     
     uint8 = np.uint8(normalized_dcm_arr)
-    print('<====== uint8 =====> \n', uint8)
 
     #image is now ready to be displayed or saved as a new DICOM file
     pillow_img = Image.fromarray(uint8)
