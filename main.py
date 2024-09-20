@@ -13,9 +13,13 @@ output_dcm = 'output2.dcm'
 
 def main():
     # load dicom file
-    dicom_file = pydicom.dcmread(dcm_sample_field)
-    dicom_image_data = ut.extract_dcm_img_attributes(dicom_file)
-    print(dicom_image_data)
+    axial_dicom_file = pydicom.dcmread(dcm_sample_axial)
+    dcm_axial_field_data = ut.extract_dcm_img_attributes(axial_dicom_file)
+    print(dcm_axial_field_data)
+    
+    # fiel_dicom_file = pydicom.dcmread(dcm_sample_field)
+    # dcm_fiel_field_data = ut.extract_dcm_img_attributes(fiel_dicom_file)
+    # print(dcm_fiel_field_data)
 
 
 main()

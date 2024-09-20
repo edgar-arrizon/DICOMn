@@ -94,7 +94,7 @@ def extract_dcm_img_attributes(dicom_file):
         # optional step: also used to determine the data type of the pixel data
         # pixel_data = dicom_file.PixelData
 
-        return transfer_syntax_uid, photometric_interpretation, pixel_representation
+        return f" Series Description: {dicom_file.SeriesDescription}\n transfer_syntax_uid: {transfer_syntax_uid}, photometric_interpretation: {photometric_interpretation}, pixel_representation : {pixel_representation} \n"
     except Exception as e:
         print(f"Error processing DICOM file: {e}")
         return None, None, None, None
