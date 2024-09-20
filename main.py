@@ -8,14 +8,11 @@ dcm_sample_field = "dcm_samples/002_S_0413/Field_Mapping/2019-08-27_09_39_37.0/S
 qr_img_jpeg = "/Users/edgararrizon/Downloads/ONMD QR Code/VistaQR-website-www_onemednet_com-2.jpeg"
 modified_dcm = '/Users/edgararrizon/code/DICOMn/output.dcm'
 
+output_dcm = 'output2.dcm'
+
 
 def main():
-    # ut.normalize_visualize_dicom(dcm_sample_axial)
-    ut.normalize_visualize_dicom2(dcm_sample_axial)
-
-
-
-
+    ut.add_qr_to_dicom('output.dcm', qr_img_jpeg, 'output5.dcm')
 
 
 main()
