@@ -82,3 +82,19 @@ def normalize_dcm_pixel_data(dcm_arr, max_v=None, min_v=None, show=False):
         pillow_img.show()
 
     return uint8_img
+
+def extract_dcm_img_attributes(dicom_file):
+    try:
+        # check transfer syntax : defines encoding and compression method used for the image data
+        transfer_syntax_uid = dicom_file.file_meta.TransferSyntaxUID
+        # analyze photometric interpretation : determines whether the image is grayscale, color or uses a color palette
+        photometric_interpretation = dicom_file.PhotometricInterpretation
+        # examine pixel data: analyze its data type (signed or unsigned integer, floating-point)
+        pixel_representation = dicom_file.PixelRepresentation
+        # optional step: also used to determine the data type of the pixel data
+        # pixel_data = dicom_file.PixelData
+
+        return transfer_syntax_uid, photometric_interpretation, pixel_representation
+    except Exception as e:
+        print(f"Error processing DICOM file: {e}")
+        return None, None, None, None

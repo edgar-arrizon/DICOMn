@@ -12,7 +12,10 @@ output_dcm = 'output2.dcm'
 
 
 def main():
-    ut.add_qr_to_dicom('output.dcm', qr_img_jpeg, 'output5.dcm')
+    # load dicom file
+    dicom_file = pydicom.dcmread(dcm_sample_field)
+    dicom_image_data = ut.extract_dcm_img_attributes(dicom_file)
+    print(dicom_image_data)
 
 
 main()
