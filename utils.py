@@ -1,3 +1,5 @@
+import os
+import csv
 import matplotlib.pyplot as plt
 import numpy as np
 import pydicom as pydicom
@@ -83,18 +85,49 @@ def normalize_dcm_pixel_data(dcm_arr, max_v=None, min_v=None, show=False):
 
     return uint8_img
 
-def extract_dcm_img_attributes(dicom_file):
-    try:
-        # check transfer syntax : defines encoding and compression method used for the image data
-        transfer_syntax_uid = dicom_file.file_meta.TransferSyntaxUID
-        # analyze photometric interpretation : determines whether the image is grayscale, color or uses a color palette
-        photometric_interpretation = dicom_file.PhotometricInterpretation
-        # examine pixel data: analyze its data type (signed or unsigned integer, floating-point)
-        pixel_representation = dicom_file.PixelRepresentation
-        # optional step: also used to determine the data type of the pixel data
-        # pixel_data = dicom_file.PixelData
+def extract_dicom_attributes(directory, output_file="dicom_attributes.csv"):
+    results = []
+    file_count = 0
+    for root, dirs, files in os.walk(directory):
+        for file in files:
+            if file.endswith(".dcm"):
+                file_path = os.path.join(root, file)
+                try:
+                    ds = pydicom.dcmread(file_path)
+                    attributes = {
+                        "Transfer Syntax UID": ds.file_meta.TransferSyntaxUID,
+                        # "Image Type": ds.ImageType,
+                        "SOP Class UID": ds.SOPClassUID,
+                        "Modality": ds.Modality,
+                        "Photometric Interpretation": ds.PhotometricInterpretation,
+                        # "Rows": ds.Rows,
+                        # "Columns": ds.Columns,
+                        # "Bits Allocated": ds.BitsAllocated,
+                        # "Pixel Spacing": ds.PixelSpacing,
+                        # "Smallest Image Pixel Value": ds.SmallestImagePixelValue,
+                        # "Largest Image Pixel Value": ds.LargestImagePixelValue,
+                        # "Window Center": ds.WindowCenter,
+                        # "Window Width": ds.WindowWidth,
+                        # "Pixel Data": ds.pixel_array
+                    }
+                    results.append(attributes)
+                    file_count += 1
+                except Exception as e:
+                    print(f"Error processing file {file_path}: {e}")
 
-        return f" Series Description: {dicom_file.SeriesDescription}\n transfer_syntax_uid: {transfer_syntax_uid}, photometric_interpretation: {photometric_interpretation}, pixel_representation : {pixel_representation} \n"
-    except Exception as e:
-        print(f"Error processing DICOM file: {e}")
-        return None, None, None, None
+    # Write results to CSV file
+    fieldnames = []
+    if results:
+        fieldnames = list(results[0].keys())
+
+    with open(output_file, "w", newline="") as csvfile:
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+        writer.writeheader()
+        writer.writerows(results)
+
+    # Log summary
+    print(f"Processed {file_count} DICOM files.")
+
+# Example usage:
+dcm_samples_dir = "dcm_samples"
+extract_dicom_attributes(dcm_samples_dir, "dicom_attributes.csv")
