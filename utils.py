@@ -127,7 +127,3 @@ def extract_dicom_attributes(directory, output_file="dicom_attributes.csv"):
 
     # Log summary
     print(f"Processed {file_count} DICOM files.")
-
-# Example usage:
-dcm_samples_dir = "dcm_samples"
-extract_dicom_attributes(dcm_samples_dir, "dicom_attributes.csv")
