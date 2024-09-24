@@ -5,7 +5,7 @@ import numpy as np
 import pydicom as pydicom
 from PIL import Image
 
-def add_qr_to_dicom(dicom_path, qr_image_path, output_path, position="top-right"):
+def paste_qr_to_dcm(dicom_path, qr_image_path, output_path, position="top-right"):
     # Step 1: Load the DICOM image
     dcm = pydicom.dcmread(dicom_path)
 
@@ -59,7 +59,8 @@ def add_qr_to_dicom(dicom_path, qr_image_path, output_path, position="top-right"
     else:
         print("This DICOM file does not contain image data.")
 
-def normalize_dcm_pixel_data(dcm_arr, max_v=None, min_v=None, show=False):
+# normalize function for CT modality
+def normalize_ct_dicom(dcm_arr, max_v=None, min_v=None, show=False):
     
     if max_v: houns_field_max = max_v
     else: houns_field_max = np.max(dcm_arr)
@@ -84,6 +85,25 @@ def normalize_dcm_pixel_data(dcm_arr, max_v=None, min_v=None, show=False):
         pillow_img.show()
 
     return uint8_img
+
+# normalization for MR modality
+def normalize_dcm_pixel_data(dcm_arr):
+    if hasattr(dcm_arr, "RescaleSlope") and hasattr(dcm_arr, "RescaleIntercept"):
+        slope = dcm_arr.RescaleSlope
+        intercept = dcm_arr.RescaleIntercept
+        normalized_dcm_arr = slope * dcm_arr + intercept
+    else:
+        # Default normalization if Rescale Slope and Intercept are not present
+        min_v = np.min(dcm_arr)
+        max_v = np.max(dcm_arr)
+        normalized_dcm_arr = (dcm_arr - min_v) / (max_v - min_v) * 255
+
+    # Ensure values are within 0-255 range
+    normalized_dcm_arr = np.clip(normalized_dcm_arr, 0, 255)
+    uint8_img = np.uint8(normalized_dcm_arr)
+
+    return uint8_img
+
 
 def extract_dicom_attributes(directory, output_file="dicom_attributes.csv"):
     results = []
