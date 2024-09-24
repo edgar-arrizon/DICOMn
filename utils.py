@@ -59,33 +59,6 @@ def paste_qr_to_dcm(dicom_path, qr_image_path, output_path, position="top-right"
     else:
         print("This DICOM file does not contain image data.")
 
-# normalize function for CT modality
-def normalize_ct_dicom(dcm_arr, max_v=None, min_v=None, show=False):
-    
-    if max_v: houns_field_max = max_v
-    else: houns_field_max = np.max(dcm_arr)
-
-    if min_v: houns_field_max = min_v
-    else: houns_field_min = np.min(dcm_arr)
-
-    houns_field_min =   np.min(dcm_arr)
-    houns_field_max =   np.max(dcm_arr)
-    houns_field_range = houns_field_max - houns_field_min
-
-    dcm_arr[dcm_arr < houns_field_min] = houns_field_min
-    dcm_arr[dcm_arr > houns_field_max] = houns_field_max
-
-    #generates values between 0 - 1
-    normalized_dcm_arr = (dcm_arr - houns_field_min) / houns_field_range
-    normalized_dcm_arr *= 255
-    uint8_img = np.int8(normalized_dcm_arr)
-
-    if show:
-        pillow_img = Image.fromarray(uint8_img)
-        pillow_img.show()
-
-    return uint8_img
-
 # normalization for MR modality
 def normalize_dcm_pixel_data(dcm_arr):
     if hasattr(dcm_arr, "RescaleSlope") and hasattr(dcm_arr, "RescaleIntercept"):
@@ -147,3 +120,30 @@ def extract_dicom_attributes(directory, output_file="dicom_attributes.csv"):
 
     # Log summary
     print(f"Processed {file_count} DICOM files.")
+
+    # normalize function for CT modality
+def normalize_ct_dicom(dcm_arr, max_v=None, min_v=None, show=False):
+    
+    if max_v: houns_field_max = max_v
+    else: houns_field_max = np.max(dcm_arr)
+
+    if min_v: houns_field_max = min_v
+    else: houns_field_min = np.min(dcm_arr)
+
+    houns_field_min =   np.min(dcm_arr)
+    houns_field_max =   np.max(dcm_arr)
+    houns_field_range = houns_field_max - houns_field_min
+
+    dcm_arr[dcm_arr < houns_field_min] = houns_field_min
+    dcm_arr[dcm_arr > houns_field_max] = houns_field_max
+
+    #generates values between 0 - 1
+    normalized_dcm_arr = (dcm_arr - houns_field_min) / houns_field_range
+    normalized_dcm_arr *= 255
+    uint8_img = np.int8(normalized_dcm_arr)
+
+    if show:
+        pillow_img = Image.fromarray(uint8_img)
+        pillow_img.show()
+
+    return uint8_img
