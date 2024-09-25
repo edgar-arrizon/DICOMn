@@ -1,3 +1,4 @@
+from matplotlib import pyplot as plt
 import utils as ut
 import pydicom as pydicom
 
@@ -11,6 +12,8 @@ qr_img_png = "/Users/edgararrizon/Downloads/ONMD QR Code/VistaQR-website-www_one
 qr_img_jpeg = "/Users/edgararrizon/Downloads/ONMD QR Code/VistaQR-website-www_onemednet_com-2.jpeg"
 
 modified_dicom_jpeg = "modified_dcm/modified_dicom_jpeg.dcm"
+modified_dicom_tiff = "modified_dcm/modified_dicom_tiff.dcm"
+modified_dicom_png = "modified_dcm/modified_dicom_png.dcm"
 
 def main():
     # read the file 
