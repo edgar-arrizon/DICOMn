@@ -1,7 +1,7 @@
 import os
 import csv
-import matplotlib.pyplot as plt
 import numpy as np
+import matplotlib.pyplot as plt
 import pydicom as pydicom
 from PIL import Image
 
@@ -11,14 +11,12 @@ def paste_qr_to_dcm(dicom_path, qr_image_path, output_path, position="top-right"
 
     if hasattr(dcm, 'pixel_array'):
 
-        #normalize the dicom pixels
         dcm_arr = dcm.pixel_array
-        uint8_pixel_arr = normalize_dcm_pixel_data(dcm_arr)
 
-        dicom_image = Image.fromarray(uint8_pixel_arr)
+        dicom_image = Image.fromarray(dcm_arr)
 
         # Step 2: Load the QR code image
-        qr_image = Image.open(qr_image_path).convert("L")  # Convert to grayscale if necessary
+        qr_image = Image.open(qr_image_path)  # Convert to grayscale if necessary
 
         # Step 3: Resize QR code if necessary to fit within the DICOM image
         qr_image = qr_image.resize((76, 76))  # Adjust size as needed
