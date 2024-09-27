@@ -65,6 +65,6 @@ def convert_8bit_to_16bit(img_path):
     plt.imshow(img_16bit)
     plt.show()
 
-    img_16bit.save("modified_qr/qr_16bit.png")
+    img_16bit.save("processed_qr/qr_16bit.png")
 
 

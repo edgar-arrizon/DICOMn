@@ -13,9 +13,9 @@ last_field = "dcm_samples/002_S_0413/Field_Mapping/2019-08-27_09_39_37.0/S868733
 axial_dti_straight_last = "dcm_samples/019_S_4367/Axial_DTI_straight/2019-05-20_10_18_12.0/S826089/ADNI_019_S_4367_MR_Axial_DTI_straight_br_raw_20190523093020094_4076_S826089_I1167911.dcm" 
 
 # the QR codes to modify
-qr_tiff = "/Users/edgararrizon/Downloads/ONMD QR Code/VistaQR-website-www_onemednet_com-2.tiff"
-qr_png = "/Users/edgararrizon/Downloads/ONMD QR Code/VistaQR-website-www_onemednet_com-2.png"
-qr_jpeg = "/Users/edgararrizon/Downloads/ONMD QR Code/VistaQR-website-www_onemednet_com-2.jpeg"
+qr_tiff = "ONMD QR Code/VistaQR-website-www_onemednet_com-2.tiff"
+qr_png = "ONMD QR Code/VistaQR-website-www_onemednet_com-2.png"
+qr_jpeg = "ONMD QR Code/VistaQR-website-www_onemednet_com-2.jpeg"
 
 # the processed QR code
 processed_qr_tiff = "processed_qr/qr_16bit.tiff"
