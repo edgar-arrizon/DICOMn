@@ -5,7 +5,6 @@ import pydicom as pydicom
 import numpy as np
 from matplotlib import pyplot as plt
 from PIL import Image
-import constants as constants
 
 # some dicom samples
 dcm_sample_axial = "dcm_samples/002_S_0413/Axial_3TE_T2_STAR/2019-08-27_09_39_37.0/S868724/ADNI_002_S_0413_MR_Axial_3TE_T2_STAR__br_raw_20190828115108611_52_S868724_I1221049.dcm" 
