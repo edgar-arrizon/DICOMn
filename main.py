@@ -29,20 +29,20 @@ def main():
     # read the file 
     dicom = pydicom.dcmread(dcm_sample_axial)
     print(pixel.get_dicom_pixel_info(dicom))
-    
+
     # get qr and dicom image info
-    # photometric_interpretation, dcm_bits_allocated, qr_color_space, qr_bitdepth = pixel.get_colorspace_bitdepth_info(dicom, qr_img_png)
+    photometric_interpretation, dcm_bits_allocated, qr_color_space, qr_bitdepth = pixel.get_colorspace_bitdepth_info(dicom, qr_img_png)
     
     # convert png
-    # pixel.convert_8bit_to_16bit(qr_img_png)
-    # modified_qr_color_space, modified_qr_bitdepth = pixel.get_qr_pixel_info(modified_qr_png)
-    # print(f"\n modified qr \n qr_color_space: {modified_qr_color_space},\n qqr_bitdepth: {modified_qr_bitdepth}")
+    pixel.convert_8bit_to_16bit(qr_img_png)
+    modified_qr_color_space, modified_qr_bitdepth = pixel.get_qr_pixel_info(modified_qr_png)
+    print(f"\n modified qr \n qr_color_space: {modified_qr_color_space},\n qqr_bitdepth: {modified_qr_bitdepth}")
     
     # test the current paste method with the original png
-    # ut.paste_qr_to_dcm(dicom, qr_img_png, modified_dicom_png) # we expect a transparent qr code in the top right corner
+    ut.paste_qr_to_dcm(dicom, qr_img_png, modified_dicom_png) # we expect a transparent qr code in the top right corner
     
     # test current paste method with processed png
-    # ut.paste_qr_to_dcm(dicom, modified_qr_png, processed_qr_pasted)
+    ut.paste_qr_to_dcm(dicom, modified_qr_png, processed_qr_pasted)
     
     #inspect the new dicom file
     new_dicom = pydicom.dcmread(modified_dicom_png)

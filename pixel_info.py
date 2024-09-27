@@ -13,6 +13,7 @@ def get_dicom_pixel_info(dicom):
         ),
         "transfer_syntax": dicom.file_meta.TransferSyntaxUID.name if dicom.file_meta else None,
         "modality": dicom.get("Modality", None),
+        "pixel_array": dicom.pixel_array,
         "pixel_spacing": dicom.get("PixelSpacing", (None, None)),
     }
     return info
