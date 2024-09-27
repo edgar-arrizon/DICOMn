@@ -1,5 +1,5 @@
 import utils as ut
-import qr_utils as qr
+import pixel_info as pixel
 import pydicom as pydicom
 
 import numpy as np
@@ -22,36 +22,32 @@ modified_dicom_jpeg = "modified_dcm/qr_dicom_jpeg.dcm"
 modified_dicom_tiff = "modified_dcm/qr_dicom_tiff.dcm"
 modified_dicom_png = "modified_dcm/qr_dicom_png.dcm"
 
+processed_qr_pasted = "modified_dcm/processed_qr_dicom_png.dcm"
+
+
 def main():
     # read the file 
     dicom = pydicom.dcmread(dcm_sample_axial)
-    photometric_interpretation, dcm_bits_allocated, qr_color_space, qr_bitdepth = qr.get_colorspace_bitdepth_info(dicom, qr_img_png)
+    print(pixel.get_dicom_pixel_info(dicom))
     
-    # convert qr to 16 bit, correct color space and save as new png
-    # convert_8bit_to_16bit(qr_img_png)
+    # get qr and dicom image info
+    # photometric_interpretation, dcm_bits_allocated, qr_color_space, qr_bitdepth = pixel.get_colorspace_bitdepth_info(dicom, qr_img_png)
     
-    #inspect the new qr image
-
+    # convert png
+    # pixel.convert_8bit_to_16bit(qr_img_png)
+    # modified_qr_color_space, modified_qr_bitdepth = pixel.get_qr_pixel_info(modified_qr_png)
+    # print(f"\n modified qr \n qr_color_space: {modified_qr_color_space},\n qqr_bitdepth: {modified_qr_bitdepth}")
+    
+    # test the current paste method with the original png
+    # ut.paste_qr_to_dcm(dicom, qr_img_png, modified_dicom_png) # we expect a transparent qr code in the top right corner
+    
+    # test current paste method with processed png
+    # ut.paste_qr_to_dcm(dicom, modified_qr_png, processed_qr_pasted)
+    
+    #inspect the new dicom file
+    new_dicom = pydicom.dcmread(modified_dicom_png)
+    print(pixel.get_dicom_pixel_info(new_dicom))
 
     # paste the qr to dicom
-
-def convert_8bit_to_16bit(img_path):
-    
-    # Load the 8-bit image
-    img_8bit = Image.open(img_path).convert('L')
-
-    # Convert to NumPy array
-    img_array_8bit = np.array(img_8bit)
-
-    # Convert to 16-bit (adjust scaling factor as needed)
-    scaling_factor = 255 / img_array_8bit.max()  # Adjust scaling factor
-    img_array_16bit = (img_array_8bit * scaling_factor).astype(np.uint16)
-
-    # # Convert back to PIL Image
-    img_16bit = Image.fromarray(img_array_16bit, mode="I;16")
-    plt.imshow(img_16bit)
-    plt.show()
-
-    img_16bit.save("modified_qr/qr_16bit_2.png", mode="I;16")
 
 main()

@@ -5,17 +5,15 @@ import matplotlib.pyplot as plt
 import pydicom as pydicom
 from PIL import Image
 
-def paste_qr_to_dcm(dicom_path, qr_image_path, output_path, position="top-right"):
+def paste_qr_to_dcm(dicom, qr_image_path, output_path, position="top-right"):
     # Step 1: Load the DICOM image
-    dcm = pydicom.dcmread(dicom_path)
 
-    if hasattr(dcm, 'pixel_array'):
-
-        dcm_arr = dcm.pixel_array
+    if hasattr(dicom, 'pixel_array'):
+        dcm_arr = dicom.pixel_array
         dicom_image = Image.fromarray(dcm_arr)
 
         # Step 2: Load the QR code image
-        qr_image = Image.open(qr_image_path)  # Convert to grayscale if necessary
+        qr_image = Image.open(qr_image_path)
 
         # Step 3: Resize QR code if necessary to fit within the DICOM image
         qr_image = qr_image.resize((76, 76))  # Adjust size as needed
@@ -48,10 +46,10 @@ def paste_qr_to_dcm(dicom_path, qr_image_path, output_path, position="top-right"
 
         # Step 5: Save the modified DICOM image
         modified_array = np.array(dicom_image)
-        dcm.PixelData = modified_array.tobytes()
+        dicom.PixelData = modified_array.tobytes()
 
         # Save to output path
-        dcm.save_as(output_path)
+        dicom.save_as(output_path)
         print(f"QR code added to DICOM and saved to {output_path}")
     else:
         print("This DICOM file does not contain image data.")

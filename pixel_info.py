@@ -17,12 +17,7 @@ def get_dicom_pixel_info(dicom):
     }
     return info
 
-def get_colorspace_bitdepth_info(dicom, qr_path):
-    # Gather the Color Space and BitDepth for the DICOM FILE and the QR code
-    dicom_info = get_dicom_pixel_info(dicom)
-    color_space = dicom_info["photometric_interpretation"]
-    bit_depth = dicom_info["bits_allocated"]
-    
+def get_qr_pixel_info(qr_path):
     qr = Image.open(qr_path)
     qr_color_space = qr.mode
     qr_bitdepth = qr.info.get('qr_bitdepth', None)
@@ -38,26 +33,37 @@ def get_colorspace_bitdepth_info(dicom, qr_path):
         else:
             qr_bitdepth = 16  # Assuming 16-bit based on common image formats
 
-    print(f"photometric_interpretation : {color_space},\n dcm_bits_allocated: {bit_depth},\n qr_color_space: {qr_color_space},\n qr_bitdepth: {qr_bitdepth}")
+    return qr_color_space, qr_bitdepth
+
+def get_colorspace_bitdepth_info(dicom, qr_path):
+    # Gather the Color Space and BitDepth for the DICOM FILE and the QR code
+    dicom_info = get_dicom_pixel_info(dicom)
+    color_space = dicom_info["photometric_interpretation"]
+    bit_depth = dicom_info["bits_allocated"]
+    
+    qr_color_space, qr_bitdepth = get_qr_pixel_info(qr_path)
+
+    print(f"photometric_interpretation : {color_space},\n bit_depth: {bit_depth},\n qr_color_space: {qr_color_space},\n qr_bitdepth: {qr_bitdepth}")
 
     return dicom_info["photometric_interpretation"], dicom_info["bits_allocated"], qr_color_space, qr_bitdepth
 
 
-# def convert_8bit_to_16bit(img_path):
+def convert_8bit_to_16bit(img_path):
     
-#     # Load the 8-bit image
-#     img_8bit = Image.open(img_path).convert('L')
+    # Load the 8-bit image
+    img_8bit = Image.open(img_path).convert("L")
 
-#     # Convert to NumPy array
-#     img_array_8bit = np.array(img_8bit)
+    # Convert to NumPy array
+    img_array_8bit = np.array(img_8bit)
 
-#     # Convert to 16-bit (adjust scaling factor as needed)
-#     scaling_factor = 255 / img_array_8bit.max()  # Adjust scaling factor
-#     img_array_16bit = (img_array_8bit * scaling_factor).astype(np.uint16)
+    # Convert to 16-bit (adjust scaling factor as needed)
+    img_array_16bit = (img_array_8bit.astype(np.uint16) * 256).astype(np.uint16)
 
-#     # # Convert back to PIL Image
-#     img_16bit = Image.fromarray(img_array_16bit)
-#     plt.imshow(img_16bit)
-#     plt.show()
+    # # Convert back to PIL Image
+    img_16bit = Image.fromarray(img_array_16bit)
+    plt.imshow(img_16bit)
+    plt.show()
 
-#     img_16bit.save("modified_qr/qr_16bit.png")
+    img_16bit.save("modified_qr/qr_16bit.png")
+
+
