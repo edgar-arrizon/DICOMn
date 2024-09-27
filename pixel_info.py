@@ -36,8 +36,9 @@ def get_qr_pixel_info(qr_path):
 
     return qr_color_space, qr_bitdepth
 
+
+# Gather the Color Space and BitDepth for the DICOM FILE and the QR code
 def get_colorspace_bitdepth_info(dicom, qr_path):
-    # Gather the Color Space and BitDepth for the DICOM FILE and the QR code
     dicom_info = get_dicom_pixel_info(dicom)
     color_space = dicom_info["photometric_interpretation"]
     bit_depth = dicom_info["bits_allocated"]
@@ -50,7 +51,6 @@ def get_colorspace_bitdepth_info(dicom, qr_path):
 
 
 def convert_8bit_to_16bit(img_path):
-    
     # Load the 8-bit image
     img_8bit = Image.open(img_path).convert("L")
 
