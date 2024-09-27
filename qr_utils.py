@@ -2,10 +2,10 @@ from PIL import Image
 import numpy as np
 import matplotlib.pyplot as plt
 
-def get_colorspace_bitdepth_info(dcm_path, qr_path):
+def get_colorspace_bitdepth_info(dicom, qr_path):
     # Gather the Color Space and BitDepth for the DICOM FILE and the QR code
-    photometric_interpretation = dcm_path.PhotometricInterpretation 
-    dcm_bits_allocated = dcm_path.BitsAllocated
+    photometric_interpretation = dicom.PhotometricInterpretation 
+    dcm_bits_allocated = dicom.BitsAllocated
 
     qr = Image.open(qr_path)
     qr_color_space = qr.mode
@@ -22,15 +22,15 @@ def get_colorspace_bitdepth_info(dcm_path, qr_path):
         else:
             qr_bitdepth = 16  # Assuming 16-bit based on common image formats
 
+    print(f"photometric_interpretation : {photometric_interpretation},\n dcm_bits_allocated: {dcm_bits_allocated},\n qr_color_space: {qr_color_space},\n qr_bitdepth: {qr_bitdepth}")
+
     return photometric_interpretation, dcm_bits_allocated, qr_color_space, qr_bitdepth
 
 
 def convert_8bit_to_16bit(img_path):
     
     # Load the 8-bit image
-    img_8bit = Image.open(img_path).convert('L')  # Ensure RGB mode
-    plt.imshow(img_8bit)
-    plt.show()
+    img_8bit = Image.open(img_path).convert('L')
 
     # Convert to NumPy array
     img_array_8bit = np.array(img_8bit)
@@ -44,4 +44,4 @@ def convert_8bit_to_16bit(img_path):
     plt.show()
 
     # Save the 16-bit image
-    img_16bit.save("modified_qr/qr_16bit.tiff")
+    img_16bit.save("modified_qr/qr_16bit.png")

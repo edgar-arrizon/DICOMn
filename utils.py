@@ -12,7 +12,6 @@ def paste_qr_to_dcm(dicom_path, qr_image_path, output_path, position="top-right"
     if hasattr(dcm, 'pixel_array'):
 
         dcm_arr = dcm.pixel_array
-
         dicom_image = Image.fromarray(dcm_arr)
 
         # Step 2: Load the QR code image
