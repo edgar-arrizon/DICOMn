@@ -12,6 +12,9 @@ def paste_qr_to_dcm(dicom, qr_image_path, output_path, position="top-right"):
         dcm_arr = dicom.pixel_array
         dicom_image = Image.fromarray(dcm_arr)
 
+        with open("pre.txt", "w") as f:
+            print(dcm_arr, file=f)
+
         # Load the QR code image
         qr_image = Image.open(qr_image_path)
         # print(np.array(qr_image))
@@ -48,6 +51,10 @@ def paste_qr_to_dcm(dicom, qr_image_path, output_path, position="top-right"):
         # Step 5: Save the modified DICOM image
         modified_array = np.array(dicom_image)
         dicom.PixelData = modified_array.tobytes()
+
+
+        with open("post.txt", "w") as f:
+            print(modified_array, file=f)
 
         # Save to output path
         dicom.save_as(output_path)

@@ -42,7 +42,7 @@ def paste_qr_to_dcm_test(dicom_file, qr):
     # convert png
     pixel.convert_8bit_to_16bit(qr)
     modified_qr_color_space, modified_qr_bitdepth = pixel.get_qr_pixel_info(processed_qr_png)
-    # print(f"\n modified qr \n qr_color_space: {modified_qr_color_space},\n qqr_bitdepth: {modified_qr_bitdepth}")
+    print(f"\n modified qr \n qr_color_space: {modified_qr_color_space},\n qqr_bitdepth: {modified_qr_bitdepth}")
     
     # test the current paste method with the original png
     ut.paste_qr_to_dcm(dicom, qr, processed_dicom_png) # we expect a transparent qr code
