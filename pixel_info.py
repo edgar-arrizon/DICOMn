@@ -49,7 +49,7 @@ def get_colorspace_bitdepth_info(dicom, qr_path):
 
     return dicom_info["photometric_interpretation"], dicom_info["bits_allocated"], qr_color_space, qr_bitdepth
 
-
+# convert PNG image to 16bit
 def convert_8bit_to_16bit(img_path):
     # Load the 8-bit image
     img_8bit = Image.open(img_path).convert("L")
