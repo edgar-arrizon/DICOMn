@@ -2,7 +2,7 @@
 FROM python:3.9.6-slim
 
 # Create a working directory inside the container
-WORKDIR /dicomn
+WORKDIR /DICOMn
 
 # Copy requirements.txt file
 COPY requirements.txt .
@@ -14,4 +14,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Specify the command to run your application (adjust the script name)
-CMD ["python", "main.py"]
+CMD ["tail", "-f", "/dev/null"]
