@@ -1,28 +1,31 @@
-name: ci
+name: Docker Build - DICOMn
 
 on:
   push:
-    branches:
-      - main
+    branches: [ "main", "dev" ]
+    pull_request:
+      branches: [ "main", "dev" ]
 
 jobs:
-  build:
+  docker-build-image:
     runs-on: ubuntu-latest
     steps:
-      -
-        name: Login to Docker Hub # this should be changed to AWS
-        uses: docker/login-action@v3 # aws-actions/configure-aws-credentials@v1
+      - name: Configure AWS Credentials
+        uses: amazon/aws-actions/configure-aws-credentials@v1
         with:
-          username: ${{ vars.DOCKER_USERNAME }} # ${{ secrets.AWS_ACCESS_KEY_ID }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }} # ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          # aws-region: us-west-2
-      -
-        name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-      -
-        name: Build and push
-        uses: docker/build-push-action@v6
-        with:
-          platforms: linux/amd64,linux/arm64  # Adjust platforms if needed
-          push: true
-          tags: ${{ vars.DOCKER_USERNAME }}/${{ github.event.repository.name }}:latest
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-west-2
+      - uses: actions/checkout@v3
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+      - name: Build the Docker image for DICOMn
+        working-directory: ./
+        env:
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          REPOSITORY: DICOMn
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build . -t $REGISTRY/$REPOSITORY:$IMAGE_TAG
+          docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG

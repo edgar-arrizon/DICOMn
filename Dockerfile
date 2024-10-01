@@ -2,7 +2,7 @@
 FROM python:3.9.6-slim
 
 # Create a working directory inside the container
-WORKDIR /DICOMn
+WORKDIR /dicomn
 
 # Copy requirements.txt file
 COPY requirements.txt .
