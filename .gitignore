@@ -18,8 +18,8 @@ ONMD QR Code/
 .env.*
 
 # Ignore processed files
-processed_dcm/
-processed_qr/
+processed_dcm/*
+processed_qr/*
 
 # Ignore logged text files (used for debugging) 
-text_logs/
+text_logs/*
