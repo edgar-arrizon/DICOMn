@@ -16,3 +16,10 @@ ONMD QR Code/
 # Ignore environment variables
 .env
 .env.*
+
+# Ignore processed files
+processed_dcm/
+processed_qr/
+
+# Ignore logged text files (used for debugging) 
+text_logs/
